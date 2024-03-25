@@ -70,7 +70,25 @@ jobs:
           command: ./dev-scripts/download-evm
       - run:
           name: Benchmark evm
-          command: dev-scripts/benchmark-all-inputs ./evm 30
+          command: |
+            alias besu-evm='evm' && \
+              dev-scripts/benchmark-all-inputs besu-evm 30
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./benchmarks/*.benchmark
+  benchmark_besu:
+    docker:
+      - image: hyperledger/besu-evmtool:24.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Benchmark besu evm
+          command: |
+            alias besu-evm='evm' && \
+              dev-scripts/benchmark-all-inputs besu-evm 30
       - persist_to_workspace:
           root: ./
           paths:
@@ -95,7 +113,11 @@ workflows:
       - benchmark_evm:
           requires:
             - compile_test_cases
+      - benchmark_besu:
+          requires:
+            - compile_test_cases
       - make_benchmark_graph:
           requires:
             - benchmark
             - benchmark_evm
+            - benchmark_besu
