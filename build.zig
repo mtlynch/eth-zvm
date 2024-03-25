@@ -8,6 +8,9 @@ pub fn build(b: *std.Build) void {
     const evm_module = b.createModule(.{
         .source_file = .{ .path = "src/evm/opcodes.zig" },
     });
+    const evm_vm_module = b.createModule(.{
+        .source_file = .{ .path = "src/evm/vm.zig" },
+    });
 
     const exe = b.addExecutable(.{
         .name = "eth-zvm",
@@ -27,6 +30,16 @@ pub fn build(b: *std.Build) void {
     mnemonic_exe.addModule("evm", evm_module);
     mnemonic_exe.addIncludePath(.{ .path = evmc_include_path });
     b.installArtifact(mnemonic_exe);
+
+    const eth_zvm_lib = b.addSharedLibrary(.{
+        .name = "ethzvm",
+        .root_source_file = .{ .path = "src/evmc/main.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    eth_zvm_lib.addIncludePath(.{ .path = evmc_include_path });
+    eth_zvm_lib.addModule("evm", evm_vm_module);
+    b.installArtifact(eth_zvm_lib);
 
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
