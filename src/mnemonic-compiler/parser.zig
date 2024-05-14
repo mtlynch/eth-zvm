@@ -68,7 +68,7 @@ fn parseValue(comptime T: type, val: [:0]const u8) !T {
 }
 
 fn isSystemLittleEndian() bool {
-    return builtin.target.cpu.arch.endian() == std.builtin.Endian.Little;
+    return builtin.target.cpu.arch.endian() == std.builtin.Endian.little;
 }
 
 fn testParseTokens(tokens: []const [:0]const u8, bytecodeExpected: []const u8) !void {

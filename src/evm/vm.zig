@@ -36,7 +36,7 @@ pub const VM = struct {
 
     pub fn nextInstruction(self: *VM, stream: *std.io.FixedBufferStream([]const u8)) !bool {
         // This doesn't really matter, since the opcode is a single byte.
-        const byte_order = std.builtin.Endian.Big;
+        const byte_order = std.builtin.Endian.big;
 
         const reader = stream.reader();
 
@@ -200,7 +200,7 @@ pub const VM = struct {
 
                 std.debug.assert(hash_bytes.len == (256 / 8));
 
-                const hash_value = std.mem.nativeTo(u256, std.mem.bytesToValue(u256, &hash_bytes), std.builtin.Endian.Big);
+                const hash_value = std.mem.nativeTo(u256, std.mem.bytesToValue(u256, &hash_bytes), std.builtin.Endian.big);
 
                 self.gas_consumed += 30;
 
@@ -243,7 +243,7 @@ pub const VM = struct {
                 return true;
             },
             opcodes.OpCode.PUSH32 => {
-                const b = try reader.readIntBig(u256);
+                const b = try reader.readInt(u256, std.builtin.Endian.big);
                 std.log.debug("{s} 0x{x:0>32}", .{ @tagName(op), b });
                 try self.stack.push(b);
                 self.gas_consumed += 3;

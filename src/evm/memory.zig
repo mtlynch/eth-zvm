@@ -57,7 +57,7 @@ pub const ExpandableMemory = struct {
 };
 
 fn toBigEndian(x: u256) u256 {
-    return std.mem.nativeTo(u256, x, std.builtin.Endian.Big);
+    return std.mem.nativeTo(u256, x, std.builtin.Endian.big);
 }
 
 fn testRead(

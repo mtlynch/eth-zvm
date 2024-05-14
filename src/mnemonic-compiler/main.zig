@@ -34,7 +34,7 @@ pub fn main() !void {
     const outfile = try std.fs.cwd().createFile(outfile_path, .{});
     defer outfile.close();
 
-    var buf: []u8 = try allocator.alloc(u8, bytecode.len * 2);
+    const buf: []u8 = try allocator.alloc(u8, bytecode.len * 2);
     defer allocator.free(buf);
     _ = try std.fmt.bufPrint(buf, "{x}", .{std.fmt.fmtSliceHexLower(bytecode)});
 

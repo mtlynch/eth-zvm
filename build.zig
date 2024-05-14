@@ -6,8 +6,9 @@ pub fn build(b: *std.Build) void {
     const evmc_include_path = "third-party/evmc/v11.0.1";
 
     const evm_module = b.createModule(.{
-        .source_file = .{ .path = "src/evm/opcodes.zig" },
+        .root_source_file = .{ .path = "src/evm/opcodes.zig" },
     });
+    evm_module.addIncludePath(.{ .path = evmc_include_path });
 
     const exe = b.addExecutable(.{
         .name = "zenith",
@@ -24,7 +25,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    mnemonic_exe.addModule("evm", evm_module);
+    mnemonic_exe.root_module.addImport("evm", evm_module);
     mnemonic_exe.addIncludePath(.{ .path = evmc_include_path });
     b.installArtifact(mnemonic_exe);
 
@@ -51,7 +52,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    mnc_unit_tests.addModule("evm", evm_module);
+    mnc_unit_tests.root_module.addImport("evm", evm_module);
     mnc_unit_tests.addIncludePath(.{ .path = evmc_include_path });
 
     const run_mnc_unit_tests = b.addRunArtifact(mnc_unit_tests);

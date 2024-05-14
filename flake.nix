@@ -4,10 +4,11 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    zls_dep.url = "github:NixOS/nixpkgs/160b762eda6d139ac10ae081f8f78d640dd523eb";
+    # 0.12.0
+    zls_dep.url = "github:NixOS/nixpkgs/5fd8536a9a5932d4ae8de52b7dc08d92041237fc";
 
-    # 0.11.0
-    zig_dep.url = "github:NixOS/nixpkgs/46688f8eb5cd6f1298d873d4d2b9cf245e09e88e";
+    # 0.12.0
+    zig_dep.url = "github:NixOS/nixpkgs/5fd8536a9a5932d4ae8de52b7dc08d92041237fc";
   };
 
   outputs = { self, flake-utils, zig_dep, zls_dep }@inputs :

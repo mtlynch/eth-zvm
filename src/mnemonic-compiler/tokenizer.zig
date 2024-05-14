@@ -28,7 +28,7 @@ pub fn tokenize(reader: anytype, allocator: std.mem.Allocator) ![][:0]const u8 {
 
 fn testTokenize(input: [:0]const u8, expected_tokens: []const [:0]const u8) !void {
     var stream = std.io.fixedBufferStream(input);
-    var reader = stream.reader();
+    const reader = stream.reader();
 
     const allocator = std.testing.allocator;
 
